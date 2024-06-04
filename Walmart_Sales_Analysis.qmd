@@ -1,0 +1,77 @@
+---
+title: "Walmart_Sales_Analysis"
+author: "Ethan Hurkett"
+format: html
+editor: visual
+---
+
+Data used: https://www.kaggle.com/datasets/devarajv88/walmart-sales-dataset
+
+```{r}
+#| label: Librarys
+library(tidyverse)
+```
+
+Reading Data
+
+```{r}
+#| label: Reading_Data
+df <- read.csv('./Data/walmart.csv')
+```
+
+
+```{r}
+```
+
+
+Laying out the data
+
+```{r}
+#| label: Gender_plot
+Gender <- ggplot(data = df, mapping = aes(x = Gender,fill = Gender))+
+  geom_bar() +
+  labs(title = "Count of customers by \"Gender\"")+
+  scale_y_continuous(labels = scales::comma) +
+  theme_bw()
+Gender
+```
+
+```{r}
+#| label: Age
+Age <- ggplot(data = df, mapping = aes(x = Age,fill = Gender))+
+  geom_bar() +
+  labs(title = "Showing \"Gender\" by \"Age\"")+
+  scale_y_continuous(labels = scales::comma) +
+  theme_bw()
+Age
+```
+Insights:
+
+```{r}
+Gender <- df %>% group_by(Gender) %>% summarise(Purchase_Mean = mean(Purchase))
+Gender
+ggplot(data = Gender, mapping = aes(x = Gender,y = Purchase_Mean, fill = Gender))+
+  geom_col() +
+  labs(
+    title = "Mean Purchase by Gender",
+    subtitle = "We can see that the diffrence in Gender seems to have an affect on ammount of purchases \nwith Males tending to make more purchases than females on average by about ~700",
+    y = "Mean Purchase"
+    ) +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+```{r}
+Stay_Duration <- df %>% group_by(Stay_In_Current_City_Years) %>% summarise(Purchase_Mean = mean(Purchase))
+Stay_Duration
+ggplot(data = Stay_Duration, mapping = aes(x = Stay_In_Current_City_Years,y = Purchase_Mean, fill = Stay_In_Current_City_Years))+
+  geom_col() +
+  labs(
+    title = "Mean Purchase by Gender",
+    x = "Years in the same city",
+    y = "Mean Purchase"
+    ) +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
